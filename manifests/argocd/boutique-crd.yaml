@@ -9,7 +9,7 @@ spec:
   project: default
   # Git repo source to link argocd to
   source:
-    repoURL: git@github.com:Z11mm/terraform-argocd.git
+    repoURL: https://github.com/Savaonu/arg-cd
     targetRevision: HEAD
     path: manifests/boutique
   # K8s cluster to make changes to
