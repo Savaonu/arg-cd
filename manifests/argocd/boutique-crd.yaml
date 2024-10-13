@@ -9,7 +9,7 @@ spec:
   project: default
   # Git repo source to link argocd to
   source:
-    repoURL: https://github.com/Savaonu/arg-cd
+    repoURL: https://github.com/Savaonu/arg-cd.git
     targetRevision: HEAD
     path: manifests/boutique
   # K8s cluster to make changes to
