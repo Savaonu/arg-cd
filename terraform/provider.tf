@@ -26,19 +26,19 @@ terraform {
 
   backend "gcs" {
     # credentials = "${ secrets.GOOGLE_CREDENTIALS }" 
-    # credentials = file(var.gcp_credentials)
-    bucket = "backend-bucket-tf"
+    #credentials = file(var.gcp_credentials)
+    bucket = "backend-bucket-tf-argocd"
   }
 }
 
 provider "google" {
-  # credentials = var.gcp_credentials
+  credentials = var.gcp_credentials
   project = var.project_id
   region  = var.region
 }
 
 provider "google-beta" {
-  credentials = var.gcp_credentials
+  #credentials = var.gcp_credentials
   project     = var.project_id
   region      = var.region
 }

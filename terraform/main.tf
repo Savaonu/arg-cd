@@ -40,6 +40,7 @@ resource "google_container_cluster" "main" {
 # # CREATE NODE POOL
 # #-------------------------------------------------------------------------------------
 resource "google_container_node_pool" "node-pool" {
+  depends_on           = [time_sleep.wait_30_seconds]
   # provider = google-beta
 
   name       = "${var.cluster_name}-node-pool"
@@ -59,7 +60,7 @@ resource "google_container_node_pool" "node-pool" {
 
   node_config {
     machine_type    = "e2-standard-2"
-    service_account = module.gke_service_account.email
+    #service_account = terraform-automation@devops-infra-competence-area.iam.gserviceaccount.com
     disk_size_gb    = "20"
     disk_type       = "pd-standard"
     preemptible     = false
@@ -82,25 +83,7 @@ module "gke_auth" {
   project_id           = var.project_id
   cluster_name         = var.cluster_name
   location             = var.region
-  use_private_endpoint = false
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# CREATE A CUSTOM SERVICE ACCOUNT TO USE WITH THE GKE CLUSTER
-# ---------------------------------------------------------------------------------------------------------------------
-module "gke_service_account" {
-  # When using these modules in your own templates, you will need to use a Git URL with a ref attribute that pins you
-  # to a specific version of the modules, such as the following example:
-  # source = "github.com/gruntwork-io/terraform-google-gke.git//modules/gke-service-account?ref=v0.2.0"
-  source = "github.com/gruntwork-io/terraform-google-gke.git//modules/gke-service-account?ref=v0.10.0"
 
-  name        = "${var.cluster_service_account_name}-${var.environment}"
-  project     = var.project
-  description = var.cluster_service_account_description
-}
 
-resource "google_project_iam_member" "deimos-gcp-explore-01" {
-  project = var.project_id
-  role    = "roles/editor"
-  member  = "serviceAccount:gke-cluster-sa-development@deimos-gcp-explore-01-333007.iam.gserviceaccount.com"
-}
